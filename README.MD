@@ -98,8 +98,12 @@ project/
 ```
 
 ## Screenshots
-<img src="assets/ss1.png">
-<img src="assets/ss2.png">
+
+<p align="center">
+  <img src="assets/ss1.png" width="45%" />
+  <img src="assets/ss2.png" width="45%" />
+</p>
+
 
 ## 🛠️ Customization
 
