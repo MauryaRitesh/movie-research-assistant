@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
+import os
 
 from core.llm import LLMClient
-from core.search import DuckDuckGoSearch
+from core.search import DuckDuckGoSearch, OMDBSearch, YouTubeSearch
 from core.conversation import ConversationManager
 from ui.components import ConversationDisplay, QueryInput
 from ui.styles import ThemeManager
@@ -12,17 +13,18 @@ class RAGApp:
     def __init__(self, root):
         self.root = root
         
-        # Configure window properties
-        self.root.title("RAG Research Assistant")
-        self.root.iconbitmap(default=None)  # You can add an icon file here
+        self.root.title("Movie Research Assistant")
+        icon_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "icon.ico")
+    
+        if os.path.exists(icon_path):
+            self.root.iconbitmap(default=icon_path)
+        else:
+            print(f"Warning: Icon file not found at {icon_path}")
         
-        # Configure ttk styles
         ThemeManager.configure_ttk_styles()
         
-        # Configure root background
         self.root.configure(background=ThemeManager.COLORS["background"])
         
-        # Setup tools and UI
         self.setup_tools()
         self.setup_ui()
     
@@ -30,14 +32,33 @@ class RAGApp:
         try:
             self.llm = LLMClient()
             
+            # Initialize all search tools
             tools = [DuckDuckGoSearch()]
+            
+            # # Try to initialize OMDB API tool
+            # try:
+            #     tools.append(OMDBSearch())
+            # except ValueError as e:
+            #     self.show_warning(f"OMDB API: {str(e)}")
+            
+            # Try to initialize YouTube API tool
+            try:
+                tools.append(YouTubeSearch())
+            except ValueError as e:
+                self.show_warning(f"YouTube API: {str(e)}")
+            
             self.conversation = ConversationManager(tools, self.llm)
             
-            self.status_message = "Ready to assist you"
+            active_tools = ", ".join([tool.name for tool in tools])
+            self.status_message = f"Ready to assist you | Active tools: {active_tools}"
         except ValueError as e:
             messagebox.showerror("API Key Error", str(e))
             self.status_message = "⚠️ Error: API key missing"
             self.conversation = None
+    
+    def show_warning(self, message):
+        messagebox.showwarning("API Key Warning", 
+                              f"{message}\nSome features will be disabled.")
     
     def setup_ui(self):
         # Create main container with padding

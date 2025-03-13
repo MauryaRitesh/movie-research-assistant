@@ -34,24 +34,64 @@ class ConversationManager:
                 if tool_results:
                     context_parts.append(f"Search results for '{entry['query']}' using {entry['tool']}:")
                     
-                    for i, result in enumerate(tool_results, 1):
-                        context_parts.append(
-                            f"{i}. {result.get('title', '')}\n"
-                            f"   {result.get('snippet', '')}\n"
-                        )
+                    if entry["tool"] == "DuckDuckGo Search":
+                        for i, result in enumerate(tool_results, 1):
+                            context_parts.append(
+                                f"{i}. {result.get('title', '')}\n"
+                                f"   {result.get('snippet', '')}\n"
+                            )
+                    elif entry["tool"] == "OMDB Search":
+                        for i, result in enumerate(tool_results, 1):
+                            context_parts.append(
+                                f"{i}. {result.get('title', '')} ({result.get('year', '')})\n"
+                                f"   IMDB Rating: {result.get('rating', 'N/A')}\n"
+                                f"   Genre: {result.get('genre', '')}\n"
+                                f"   Director: {result.get('director', '')}\n"
+                                f"   Actors: {result.get('actors', '')}\n"
+                                f"   Plot: {result.get('plot', '')}\n"
+                                f"   IMDB: {result.get('imdbLink', '')}\n"
+                            )
+                    elif entry["tool"] == "YouTube Search":
+                        for i, result in enumerate(tool_results, 1):
+                            context_parts.append(
+                                f"{i}. {result.get('title', '')}\n"
+                                f"   {result.get('description', '')}\n"
+                                f"   Link: {result.get('link', '')}\n"
+                            )
         
         return "\n".join(context_parts)
     
     def process_query(self, query: str) -> Tuple[str, Dict[str, Any]]:
         self.add_message("user", query)
         
-        search_tool = self.tools.get("DuckDuckGo Search")
         tool_results = {}
         
+        self.add_message("assistant", f"Calling DuckDuckGo search: {query}")
+        
+        search_tool = self.tools.get("DuckDuckGo Search")
         if search_tool:
-            search_results = search_tool.search(query)
-            self.add_tool_call(search_tool.name, query, search_results)
+            imdb_query = f"{query} imdb rating release date director starring"
+            search_results = search_tool.search(imdb_query)
+            self.add_tool_call(search_tool.name, imdb_query, search_results)
             tool_results["search"] = search_results
+        
+        self.add_message("assistant", f"Calling YouTube search: {query}")
+        
+        youtube_tool = self.tools.get("YouTube Search")
+        if youtube_tool:
+            trailer_query = f"{query} trailer"
+            youtube_results = youtube_tool.search(trailer_query)
+            
+            if youtube_results.get("results") and len(youtube_results["results"]) > 1:
+                youtube_results["results"] = [youtube_results["results"][0]]
+                
+            self.add_tool_call(youtube_tool.name, trailer_query, youtube_results)
+            tool_results["youtube"] = youtube_results
+        
+        if youtube_tool and youtube_results.get("results"):
+            trailer_info = youtube_results["results"][0]
+            trailer_message = f"Found Trailer for {query}: {trailer_info.get('link', '')}"
+            self.add_message("assistant", trailer_message)
         
         context = self.get_context_from_history()
         

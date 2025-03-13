@@ -17,8 +17,10 @@ class LLMClient:
     
     def generate_response(self, prompt: str, context: Optional[str] = None) -> str:
         try:
-            system_prompt = """You are a helpful research assistant with access to search tools. 
-            You provide accurate information based on search results."""
+            system_prompt = """You are a helpful research assistant who can help users find information about movies, TV shows, and other topics.
+            When providing information about movies or shows, include IMDB ratings, release dates, 
+            and other relevant details from the context if available.
+            Use today's date and use data from the context."""
             
             if context:
                 system_prompt += f"\n\nHere is additional context from searches:\n{context}"

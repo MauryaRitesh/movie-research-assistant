@@ -21,7 +21,7 @@ class ThemeManager:
     def configure_ttk_styles():
         style = ttk.Style()
         
-        # Configure the general application style
+        # General application style
         style.configure("TFrame", background=ThemeManager.COLORS["background"])
         style.configure("TLabel", background=ThemeManager.COLORS["background"], foreground=ThemeManager.COLORS["text"])
         style.configure("TButton", 
@@ -33,7 +33,7 @@ class ThemeManager:
                  background=[("active", ThemeManager.COLORS["link"])],
                  relief=[("pressed", "sunken")])
         
-        # LabelFrame styling for conversation display
+        # LabelFrame
         style.configure("TLabelframe", 
                        background=ThemeManager.COLORS["background"],
                        foreground=ThemeManager.COLORS["primary"])
@@ -42,36 +42,35 @@ class ThemeManager:
                        background=ThemeManager.COLORS["background"],
                        foreground=ThemeManager.COLORS["primary"])
         
-        # Entry widget styling
+        # Entry widget
         style.configure("TEntry", 
                        foreground=ThemeManager.COLORS["text"],
                        fieldbackground="white",
                        padding=8)
         
-        # Combobox styling
+        # Combobox
         style.configure("TCombobox", 
                        foreground=ThemeManager.COLORS["text"],
                        background="white")
                        
-        # Status bar styling
+        # Status bar
         style.configure("Status.TLabel", 
                        background=ThemeManager.COLORS["secondary"],
                        foreground="white",
                        padding=3,
                        font=("Segoe UI", 9))
         
-        # Main button styling
+        # Main button
         style.configure("Main.TButton", 
                        font=("Segoe UI", 10, "bold"),
                        background=ThemeManager.COLORS["accent"],
-                       foreground="white",
+                       foreground=ThemeManager.COLORS["link"],
                        padding=8)
         style.map("Main.TButton",
                  background=[("active", ThemeManager.COLORS["link"])],
                  relief=[("pressed", "sunken")])
 
 def apply_text_styles(text_widget):
-    # Configure the base font and colors
     text_widget.configure(
         font=("Segoe UI", 10),
         background="white",
@@ -84,13 +83,13 @@ def apply_text_styles(text_widget):
         relief="solid"
     )
     
-    # Tag configurations for different message types
     text_widget.tag_configure(
         "user", 
         foreground=ThemeManager.COLORS["primary"],
         font=("Segoe UI", 10, "bold"),
         lmargin1=10,
-        lmargin2=20
+        lmargin2=20,
+        background="#FFFACD"
     )
     
     text_widget.tag_configure(
@@ -105,10 +104,55 @@ def apply_text_styles(text_widget):
         "tool_header", 
         foreground=ThemeManager.COLORS["text_light"],
         font=("Segoe UI", 9, "italic"),
-        background=ThemeManager.COLORS["highlight"],
+        background="#E6F3FF",
         lmargin1=10,
         lmargin2=10,
         rmargin=10
+    )
+    
+    text_widget.tag_configure(
+        "movie_title", 
+        foreground=ThemeManager.COLORS["primary"],
+        font=("Segoe UI", 12, "bold"),
+        lmargin1=20,
+        lmargin2=20,
+        background="#E6F3FF"
+    )
+    
+    text_widget.tag_configure(
+        "info_label", 
+        foreground=ThemeManager.COLORS["secondary"],
+        font=("Segoe UI", 10, "bold"),
+        lmargin1=25,
+        lmargin2=25,
+        background="#E6F3FF"
+    )
+    
+    text_widget.tag_configure(
+        "info_value", 
+        foreground=ThemeManager.COLORS["text"],
+        font=("Segoe UI", 10),
+        lmargin1=25,
+        lmargin2=120,
+        background="#E6F3FF"
+    )
+    
+    text_widget.tag_configure(
+        "info_value_bold", 
+        foreground=ThemeManager.COLORS["text"],
+        font=("Segoe UI", 10, "bold"),
+        lmargin1=25,
+        lmargin2=120,
+        background="#E6F3FF" 
+    )
+    
+    text_widget.tag_configure(
+        "results_header", 
+        foreground=ThemeManager.COLORS["secondary"],
+        font=("Segoe UI", 10, "bold"),
+        lmargin1=20,
+        lmargin2=20,
+        background="#E6F3FF"
     )
     
     text_widget.tag_configure(
@@ -116,7 +160,8 @@ def apply_text_styles(text_widget):
         foreground=ThemeManager.COLORS["secondary"],
         font=("Segoe UI", 10, "bold"),
         lmargin1=20,
-        lmargin2=20
+        lmargin2=20,
+        background="#E6F3FF"
     )
     
     text_widget.tag_configure(
@@ -124,7 +169,8 @@ def apply_text_styles(text_widget):
         foreground=ThemeManager.COLORS["text"],
         font=("Segoe UI", 10, "bold"),
         lmargin1=20,
-        lmargin2=30
+        lmargin2=30,
+        background="#E6F3FF"
     )
     
     text_widget.tag_configure(
@@ -132,7 +178,8 @@ def apply_text_styles(text_widget):
         foreground=ThemeManager.COLORS["text_light"],
         font=("Segoe UI", 9),
         lmargin1=30,
-        lmargin2=40
+        lmargin2=40,
+        background="#E6F3FF"
     )
     
     text_widget.tag_configure(
@@ -140,7 +187,8 @@ def apply_text_styles(text_widget):
         foreground=ThemeManager.COLORS["text"],
         font=("Segoe UI", 9),
         lmargin1=30,
-        lmargin2=40
+        lmargin2=40,
+        background="#E6F3FF"
     )
     
     text_widget.tag_configure(
@@ -148,7 +196,8 @@ def apply_text_styles(text_widget):
         foreground=ThemeManager.COLORS["link"],
         font=("Segoe UI", 9, "underline"),
         lmargin1=40,
-        lmargin2=40
+        lmargin2=40,
+        background="#E6F3FF"
     )
     
     text_widget.tag_configure(
@@ -156,5 +205,6 @@ def apply_text_styles(text_widget):
         foreground=ThemeManager.COLORS["error"],
         font=("Segoe UI", 9, "italic"),
         lmargin1=20,
-        lmargin2=20
+        lmargin2=20,
+        background="#E6F3FF"
     )
