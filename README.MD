@@ -41,7 +41,7 @@ Movie Research Assistant is a desktop application that combines modern LLM capab
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/movie-research-assistant.git
+   git clone https://github.com/MauryaRitesh/movie-research-assistant.git
    cd movie-research-assistant
    ```
 
@@ -96,6 +96,10 @@ project/
     ├── components.py     # UI components and widgets
     └── styles.py         # Application styling and themes
 ```
+
+## Screenshots
+<img src="assets/ss1.png">
+<img src="assets/ss2.png">
 
 ## 🛠️ Customization
 
